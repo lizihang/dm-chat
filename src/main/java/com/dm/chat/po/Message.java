@@ -2,7 +2,6 @@ package com.dm.chat.po;
 
 import java.io.Serializable;
 import java.util.Date;
-
 /**
  * <p>标题：</p>
  * <p>功能：</p>
@@ -17,71 +16,77 @@ import java.util.Date;
  * 查看帮助：<a href="" target="_blank"></a>
  */
 public class Message implements Serializable {
-    private static final long serialVersionUID = 1439913851628269548L;
-    private Integer type;
-    private Boolean mine;
-    /**
-     * 发送方
-     */
-    private String fromName;
-    /**
-     * 接收方
-     */
-    private String toName;
-    /**
-     * 时间
-     */
-    private Date date;
-    /**
-     * 发送的数据
-     */
-    private String content;
+	private static final long    serialVersionUID = 1439913851628269548L;
+	/**
+	 * 发送方名称
+	 */
+	private              String  sendName;
+	/**
+	 * 接收方名称
+	 */
+	private              String  receiveName;
+	/**
+	 * 发送时间
+	 */
+	private              Date    sendTime;
+	/**
+	 * 消息内容
+	 */
+	private              String  content;
+	/**
+	 * 消息类型
+	 */
+	private              Integer type;
+	/**
+	 * 是否发送给自己
+	 */
+	private              Boolean mine;
 
-    public Integer getType() {
-        return type;
-    }
+	public String getSendName() {
+		return sendName;
+	}
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
+	public void setSendName(String sendName) {
+		this.sendName = sendName;
+	}
 
-    public Boolean getMine() {
-        return mine;
-    }
+	public String getReceiveName() {
+		return receiveName;
+	}
 
-    public void setMine(Boolean mine) {
-        this.mine = mine;
-    }
+	public void setReceiveName(String receiveName) {
+		this.receiveName = receiveName;
+	}
 
-    public String getFromName() {
-        return fromName;
-    }
+	public Date getSendTime() {
+		return sendTime;
+	}
 
-    public void setFromName(String fromName) {
-        this.fromName = fromName;
-    }
+	public void setSendTime(Date sendTime) {
+		this.sendTime = sendTime;
+	}
 
-    public String getToName() {
-        return toName;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public void setToName(String toName) {
-        this.toName = toName;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public Date getDate() {
-        return date;
-    }
+	public Integer getType() {
+		return type;
+	}
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+	public void setType(Integer type) {
+		this.type = type;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public Boolean getMine() {
+		return mine;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public void setMine(Boolean mine) {
+		this.mine = mine;
+	}
 }

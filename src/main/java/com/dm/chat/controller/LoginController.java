@@ -28,6 +28,5 @@ public class LoginController {
     public Result login(User user) {
         DataDB.onlineUsers.put(user.getUsername(), user);
         return Result.success("登录成功");
-        Object
     }
 }
