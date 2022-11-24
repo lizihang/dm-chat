@@ -41,7 +41,7 @@ public class ChatEndpoint {
 
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config, @PathParam("username") String username) {
-		logger.info("websocket建立连接！");
+		logger.info("用户<" + username + ">建立websocket连接！");
 		this.session = session;
 		this.username = username;
 		//存放到onlineUsers中保存
@@ -50,7 +50,7 @@ public class ChatEndpoint {
 		// 封装系统推送消息,前端onmessage接收的数据
 		// String message = MessageUtil.buildOnlineMessage(username, 1);
 		// 通知所有客户端用户上线
-		broadcastMsgToAllOnlineUsers("用户<" + username + ">上线了");
+		// broadcastMsgToAllOnlineUsers("用户<" + username + ">上线了");
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class ChatEndpoint {
 
 	@OnClose
 	public void onClose(Session session, CloseReason closeReason) {
-		logger.info("websocket关闭连接！");
+		logger.info("用户<" + username + ">关闭websocket连接！");
 		//
 		ChatEndpoint remove = DataDB.socketMap.remove(username);
 		// 广播
@@ -102,12 +102,12 @@ public class ChatEndpoint {
 		//
 		// DataDB.onlineUsers.remove(username);
 		// 通知所有客户端用户下线
-		broadcastMsgToAllOnlineUsers("用户<" + username + ">下线了");
+		// broadcastMsgToAllOnlineUsers("用户<" + username + ">下线了");
 	}
 
 	@OnError
 	public void onError(Session session, Throwable throwable) {
-		logger.error(throwable.getMessage());
+		logger.error("onError方法，session id = {},message = {}", session.getId(), throwable.getStackTrace());
 	}
 
 	/**
@@ -123,12 +123,18 @@ public class ChatEndpoint {
 			}
 			ChatEndpoint chatEndpoint = DataDB.socketMap.get(name);
 			//获取推送对象
-			RemoteEndpoint.Basic basicRemote = chatEndpoint.session.getBasicRemote();
-			try {
-				basicRemote.sendText(message);
-			} catch (IOException e) {
-				logger.error("广播发送系统消息失败！{}", e.getMessage());
-				e.printStackTrace();
+			Session _session = chatEndpoint.session;
+			if (_session != null && _session.isOpen()) {
+				synchronized (_session) {
+					if (_session.isOpen()) {
+						try {
+							session.getBasicRemote().sendText(message);
+						} catch (IOException e) {
+							logger.error("广播发送系统消息失败！{}", e.getMessage());
+							// e.printStackTrace();
+						}
+					}
+				}
 			}
 		}
 	}
